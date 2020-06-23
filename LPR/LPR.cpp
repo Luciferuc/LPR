@@ -4,70 +4,49 @@
 #include <string.h>
 #include <locale.h>
 
-/*
-Данная функция выводит на экран из файла строки, пока не достингет конца самого файла.
-char lakes - Символьный массив, который будет хранить выведенные из файла строки.
-FILE k - Указатель на файл.
-*/
-void show_list(FILE *k) {
-	char lakes[300] = { '\0' };
-
-	while (fgets(lakes, sizeof(lakes), k) != NULL) {
-		printf("%s", lakes);
-	}
-	printf("\n");
-	fseek(k, 0, SEEK_SET);
-}
+struct lake {
+	char name[25];
+	char country[25] ;
+	char deep[25] ;
+	char salt[25] ;
+};
 
 /*
-Данная функция выводит на экран определенные данные, удовлетворяющие поставленному пользователем условию.
-char lakes - Символьный массив, который будет перебирать строки из файла.
-char tmp - Символьный массив, который будет содержать подходящие для вывода строки.
-int index - переменная которая будет указывать на какой строке происходит действие.
-float dp = 0, st = 0 - переменные которые будут содержать введеные пользователем условия, по которым будут выводится данные.
-float ds = 0, dc = 0 - переменные содержащие взятые из файла числа.
-FILE k - Указатель на файл.
+Данная функция считывает из файла по 4 строки и заполняет структуру данными.
+int index - это переменная, которая возвращяется функцией и показывает сколько блоков структуры было считано.
+FILE k - указатель на файл.
+struct lake lakes - структура, содержащая в себе 4 строки(name, country, deep, salt)
 */
-void wanted_options(FILE* k) {
-	char lakes[300] = { '\0' };
-	char tmp[300] = { '\0' };
+int show_list(FILE* k, struct lake* lakes) {
 	int index = 0;
-	float dp = 0, st = 0, ds = 0, dc = 0;
-
-	printf("Введите глубину: ");
-	scanf_s("%f", &dp);
-	printf("Введите соленость: ");
-	scanf_s("%f", &st);
-	printf("\n");
-
-	while (fgets(lakes, sizeof(lakes), k) != NULL) {
-		strcat(tmp, lakes);
-		if ((++index % 2) == 0) {
-			fscanf(k, "%f", &ds);
-			if ((++index % 3) == 0) {
-				fscanf(k, "%f", &dc);
-				if (ds < dp && dc >= st) {
-					printf("%s", tmp);
-					printf("%.1f м.\n", ds);
-					printf("%.1f %%\n", dc);
-					strcpy(tmp, "");
-				}
-				else {
-					strcpy(tmp, "");
-				}
-			}
-		}
+	while (!feof(k)) {
+			fgets(lakes[index].name, sizeof(lakes[index].name), k);
+			fgets(lakes[index].country, sizeof(lakes[index].country), k);
+			fgets(lakes[index].deep, sizeof(lakes[index].deep), k);
+			fgets(lakes[index].salt, sizeof(lakes[index].salt), k);
+		index++;
 	}
-	printf("\n");
 	fseek(k, 0, SEEK_SET);
+	return index;
 }
-
+/*
+void error() {
+	while (!feof(k)) {
+	if()
+	}
+	if (fscanf(k, "%s", sizeof())) {}
+}
+*/
 int main() {
 
 	setlocale(LC_ALL, "Rus");
 
 	FILE* k;
-	int wt = 0;
+	struct lake lakes[25];
+
+	int index, wt = 0;
+	float dp = 0, st = 0;
+	double ds = 0, dc = 0;
 
 	if ((k = fopen("lakes.txt", "r")) == NULL) {
 		printf("Ошибка открытия файла, создание нового файла\n");
@@ -78,8 +57,37 @@ int main() {
 		printf("Введите действие: ");
 		scanf_s("%i", &wt);
 		switch (wt) {
-		case 1: show_list(k); break;
-		case 2: wanted_options(k); break;
+		case 1: 
+			index = show_list(k, lakes);
+			for (int i = 0; i < index; i++) {
+				printf("%s", lakes[i].name);
+				printf("%s", lakes[i].country);
+				printf("%s", lakes[i].deep);
+				printf("%s\n", lakes[i].salt);
+			}
+			printf("\n"); 
+			break;
+		case 2: 
+			printf("Введите глубину: ");
+			scanf_s("%f", &dp);
+			printf("Введите соленость: ");
+			scanf_s("%f", &st);
+			printf("\n");
+
+			index = show_list(k, lakes);
+			for (int i = 0; i < index; i++) {
+				ds = atof(lakes[i].deep);
+				dc = atof(lakes[i].salt);
+				if (ds < dp && dc > st) {
+					printf("%s", lakes[i].name);
+					printf("%s", lakes[i].country);
+					printf("%s", lakes[i].deep);
+					printf("%s\n", lakes[i].salt);
+				}
+			}
+			fseek(k, 0, SEEK_SET);
+			printf("\n");
+			break;
 		case 0: fclose(k); exit(0);
 		default: printf("Неверно введено действие\n");
 		}
