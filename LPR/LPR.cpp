@@ -13,45 +13,6 @@ struct lake {
 	char salt[MAX_STR];
 };
 
-/*
-Данная функция считывает из файла по 4 строки и заполняет структуру данными, а также проверяет хватает ли в структуре места для записи.
-int index - это переменная, которая возвращяется функцией и показывает сколько блоков структуры было считано.
-FILE k - указатель на файл.
-struct lake lakes - структура, содержащая в себе 4 строки(name, country, deep, salt).
-char str - временный массив, через который будет проверятся строка на переполнение.
-*/
-/*
-int show_list(FILE* k, struct lake* lakes) {
-	char str[100];
-	int index = 0;
-
-	while (!feof(k)) {
-		fgets(str, sizeof(str), k);
-		if (strlen(str) >= MAX_STR) {
-			strcpy(str, "Строка переполнена\n");
-		}
-		strcpy(lakes[index].name, str);
-		fgets(str, sizeof(str), k);
-		if (strlen(str) >= MAX_STR) {
-			strcpy(str, "Строка переполнена\n");
-		}
-		strcpy(lakes[index].country, str);
-		fgets(str, sizeof(str), k);
-		if (strlen(str) >= MAX_STR) {
-			strcpy(str, "Строка переполнена\n");
-		}
-		strcpy(lakes[index].deep, str);
-		fgets(str, sizeof(str), k);
-		if (strlen(str) >= MAX_STR) {
-			strcpy(str, "Строка переполнена\n");
-		}
-		strcpy(lakes[index].salt, str);
-		index++;
-	}
-	fseek(k, 0, SEEK_SET);
-	return index;
-}
-*/
 int main() {
 
 	setlocale(LC_ALL, "Rus");

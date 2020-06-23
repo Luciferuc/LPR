@@ -14,7 +14,6 @@ struct lake {
 };
 
 int show_list(FILE* k, struct lake *lakes) {
-	//struct lake lakes[25];
 	char str[100];
 	int index = 0;
 
