@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <locale.h>
+#include "lists.h"
 
 struct lake {
 	char name[MAX_STR];
@@ -19,6 +20,7 @@ FILE k - указатель на файл.
 struct lake lakes - структура, содержащая в себе 4 строки(name, country, deep, salt).
 char str - временный массив, через который будет проверятся строка на переполнение.
 */
+/*
 int show_list(FILE* k, struct lake* lakes) {
 	char str[100];
 	int index = 0;
@@ -49,7 +51,7 @@ int show_list(FILE* k, struct lake* lakes) {
 	fseek(k, 0, SEEK_SET);
 	return index;
 }
-
+*/
 int main() {
 
 	setlocale(LC_ALL, "Rus");
