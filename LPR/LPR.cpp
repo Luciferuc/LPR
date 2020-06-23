@@ -1,14 +1,15 @@
 ﻿#define _CRT_SECURE_NO_WARNINGS
+#define MAX_STR 25
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <locale.h>
 
 struct lake {
-	char name[25];
-	char country[25] ;
-	char deep[25] ;
-	char salt[25] ;
+	char name[MAX_STR];
+	char country[MAX_STR] ;
+	char deep[MAX_STR];
+	char salt[MAX_STR];
 };
 
 /*
@@ -18,25 +19,36 @@ FILE k - указатель на файл.
 struct lake lakes - структура, содержащая в себе 4 строки(name, country, deep, salt)
 */
 int show_list(FILE* k, struct lake* lakes) {
+	char str[100];
 	int index = 0;
+
 	while (!feof(k)) {
-			fgets(lakes[index].name, sizeof(lakes[index].name), k);
-			fgets(lakes[index].country, sizeof(lakes[index].country), k);
-			fgets(lakes[index].deep, sizeof(lakes[index].deep), k);
-			fgets(lakes[index].salt, sizeof(lakes[index].salt), k);
+		fgets(str, sizeof(str), k);
+		if (strlen(str) >= MAX_STR) {
+			strcpy(str, "Строка переполнена\n");
+		}
+		strcpy(lakes[index].name, str);
+		fgets(str, sizeof(str), k);
+		if (strlen(str) >= MAX_STR) {
+			strcpy(str, "Строка переполнена\n");
+		}
+		strcpy(lakes[index].country, str);
+		fgets(str, sizeof(str), k);
+		if (strlen(str) >= MAX_STR) {
+			strcpy(str, "Строка переполнена\n");
+		}
+		strcpy(lakes[index].deep, str);
+		fgets(str, sizeof(str), k);
+		if (strlen(str) >= MAX_STR) {
+			strcpy(str, "Строка переполнена\n");
+		}
+		strcpy(lakes[index].salt, str);
 		index++;
 	}
 	fseek(k, 0, SEEK_SET);
 	return index;
 }
-/*
-void error() {
-	while (!feof(k)) {
-	if()
-	}
-	if (fscanf(k, "%s", sizeof())) {}
-}
-*/
+
 int main() {
 
 	setlocale(LC_ALL, "Rus");
@@ -59,7 +71,7 @@ int main() {
 		switch (wt) {
 		case 1: 
 			index = show_list(k, lakes);
-			for (int i = 0; i < index; i++) {
+			for (int i = 0; i < 12; i++) {
 				printf("%s", lakes[i].name);
 				printf("%s", lakes[i].country);
 				printf("%s", lakes[i].deep);
